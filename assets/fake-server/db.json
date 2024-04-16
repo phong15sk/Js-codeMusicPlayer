@@ -1,0 +1,32 @@
+{
+    "song": [
+        {
+            "id": 1,
+            "name": "Em cua ngay hom qua",
+            "singer": "Son Tung MTP",
+            "url_img": "./assets/img/img-music-01.png",
+            "url_audio": ""
+        },
+        {
+            "id": 2,
+            "name": "Chung ta khong thuoc ve nhau",
+            "singer": "Son Tung MTP",
+            "url_img": "./assets/img/img-music-02.png",
+            "url_audio": ""
+        },
+        {
+            "id": 3,
+            "name": "Anh khong can gi ngoai em",
+            "singer": "Den Vau",
+            "url_img": "./assets/img/img-music-03.png",
+            "url_audio": ""
+        },
+        {
+            "id": 4,
+            "name": "Len thien dang",
+            "singer": "Wovy",
+            "url_img": "./assets/img/img-music-04.png",
+            "url_audio": ""
+        }
+    ]
+}
