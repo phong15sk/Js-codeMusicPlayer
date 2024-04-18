@@ -75,7 +75,7 @@ function progressUpdate(){
         console.log(nodeToolPlay.getAttribute('isPlay'))
         if(Boolean(nodeToolPlay.getAttribute('isPlay')))
         {
-            console.log(nodeToolPlay.getAttribute('isPlay'), Boolean(nodeToolPlay.getAttribute('isPlay')))
+            playNextSongItem()
             showNameAndImgSong()
         }
     }
