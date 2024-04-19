@@ -6,6 +6,7 @@ const nodelistSong = document.querySelector('.list-song')
 const nodeToolPlay = document.querySelector('.tool .play')
 const nodeToolPause = document.querySelector('.tool .pause')
 const audioElement = document.querySelector("audio")
+const playerProgress = document.querySelector(".player-progress")
 const progressFilled = document.querySelector(".player-progress-filled")
 const playerVolume = document.querySelector(".input-range")
 const time = document.querySelector(".time")
@@ -39,12 +40,18 @@ function AddEvent() {
         audioElement.load()
         audioElement.play()
     }
+    playerProgress.onclick = (e) => {
+        let percent = parseFloat(e.offsetX / playerProgress.offsetWidth)
+        progressUpdateByClick(percent)
+        console.log(percent)
+    }
 }
 
 function activePlay() {
     nodeToolPlay.classList.remove('active')
     nodeToolPause.classList.add('active')
     nodeToolPlay.setAttribute('isPlay', true)
+    nodeImgSong.classList.add('active')
     audioElement.play()
 }
 
@@ -52,6 +59,7 @@ function activePause() {
     nodeToolPause.classList.remove('active')
     nodeToolPlay.classList.add('active')
     nodeToolPlay.setAttribute('isPlay', false)
+    nodeImgSong.classList.remove('active')
     audioElement.pause()
 }
 
@@ -76,9 +84,13 @@ function progressUpdate(){
         if(Boolean(nodeToolPlay.getAttribute('isPlay')))
         {
             playNextSongItem()
-            showNameAndImgSong()
         }
     }
+}
+
+function progressUpdateByClick(percent){
+   audioElement.currentTime  = (percent * audioElement.duration)
+   console.log(audioElement.currentTime)
 }
 
 function playSongItem(urlAudio, indexSong) {
@@ -87,28 +99,41 @@ function playSongItem(urlAudio, indexSong) {
     currentSong = {...lstSong[indexSong]}
     activePlay()
     showNameAndImgSong()
+    nodeImgSong.classList.add('active')
 }
 
 function playNextSongItem()
 {
-    currentSong = lstSong[++currentSongIndex]
+    ++currentSongIndex
+    resetIndexSong()
+    currentSong = lstSong[currentSongIndex]
     if (currentSong != undefined)
     {
         audioElement.setAttribute('src', currentSong.url_audio)
         activePlay()
         showNameAndImgSong()
-    }   
+        nodeImgSong.classList.add('active')
+    }
 }
 
-function playBackSongItem()
-{
-    currentSong = lstSong[++currentSongIndex]
-    if (currentSong != undefined)
-    {
+function playBackSongItem() {
+    --currentSongIndex
+    resetIndexSong()
+    currentSong = lstSong[currentSongIndex]
+    if (currentSong != undefined) {
         audioElement.setAttribute('src', currentSong.url_audio)
         activePlay()
         showNameAndImgSong()
+        nodeImgSong.classList.add('active')
     }
+}
+
+function resetIndexSong()
+{
+    if (currentSongIndex >= lstSong.length || currentSongIndex < 0)
+    {
+        currentSongIndex = 0
+    }   
 }
 
 function showNameAndImgSong() 
@@ -117,8 +142,14 @@ function showNameAndImgSong()
     nodeImgSong.setAttribute('src', currentSong.url_img)
 }
 
+function initSong() {
+    currentSong = {...lstSong[currentSongIndex]}
+    audioElement.setAttribute('src', currentSong.url_audio)
+    showNameAndImgSong()
+}
+
 function render(listSong) {
-    lstSong = {...listSong}
+    lstSong = [...listSong]
     let html = listSong.map((item, index) => {
         return `<div class="song-item flex" onclick=playSongItem('${item.url_audio}',${index}) index-song=${index}>  
                     <div class="img-song-item" }>
@@ -135,6 +166,7 @@ function render(listSong) {
     }).join('')
 
     nodelistSong.innerHTML = html
+    initSong()
 }
 
 GetListSong(render)
